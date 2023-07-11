@@ -67,7 +67,7 @@ class Scroll{
         const fadeRight = this.section.querySelectorAll('.fade-right');
         const fadeLeft = this.section.querySelectorAll('.fade-left');
         fadeRight.forEach(el => {
-            el.style.transition = 500 + 'ms'
+            el.style.transition = 1000 + 'ms'
             if(window.scrollY >= (section.offsetTop - section.offsetHeight * coordinate)){
                 el.classList.add('active')
             }else{
@@ -75,7 +75,7 @@ class Scroll{
             }
         })
         fadeLeft.forEach(el => {
-            el.style.transition = 500 + 'ms'
+            el.style.transition = 1000 + 'ms'
             if(window.scrollY >= (section.offsetTop - section.offsetHeight * coordinate)){
                 el.classList.add('active')
             }else{
@@ -110,15 +110,26 @@ function dotMove(e){
     }
 }
 
+let mode = true
+
+const detect = new MobileDetect(window.navigator.userAgent)
+if(detect.mobile() != null) {
+    dot.style = blur.style = 'display: none'
+    mode = false
+} else {
+    dot.style = blur.style = 'display: block' 
+    mode = true 
+}
+
 class Rotate3D{
     constructor(obj){
         this.cards = document.querySelectorAll(obj.cards);
         this.cards.forEach(card => {
-            card.addEventListener('mousemove', (e) => {this.rotate(e, card)})
-
-            card.addEventListener('mouseout', () => {this.rotateNone(card)})
+            if (mode == true) {
+                card.addEventListener('mousemove', (e) => {this.rotate(e, card)})
+                card.addEventListener('mouseout', () => {this.rotateNone(card)})
+            }
         })
-        
     }
     rotate(e, item){
         const cardItem = item.querySelector('.card')
@@ -134,12 +145,6 @@ const rotate3d = new Rotate3D({
     cards: '.card-outer'
 })
 
-const detect = new MobileDetect(window.navigator.userAgent)
-if(detect.mobile() != null) {
-    dot.style = blur.style = 'display: none'    
-} else {
-    dot.style = blur.style = 'display: block'    
-}
 
 
 
